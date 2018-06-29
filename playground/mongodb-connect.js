@@ -7,9 +7,9 @@ myMongoClient.connect('mongodb://localhost:27017/TodoApp',(err,client) => {
       console.log('Connected to mongo server');
       var db = client.db('TodoApp');
       db.collection('Users').insertOne({
-        name:'Jitendra',
+        name:'abhi',
         age:30,
-        location:'delhi'
+        location:'kolkatta'
       },(err,result)=>{
          if(err){
            return console.log('unable to insert into a users');
