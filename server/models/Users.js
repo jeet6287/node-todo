@@ -1,15 +1,16 @@
-var mongoose = require('./db/mongoose');
+var mongoose = require('mongoose');
 
-var Users = mongoose.model('Users',{
+var User = mongoose.model('User',{
     name:{
       type:String,
       required:true,
-      trim:true
+      trim:true,
+      minlength:1
     },
     age:{
       type :Number,
-      required:true,
+      default:20
     }
 });
 
-module.exports = {Users};
+module.exports = {User};  
