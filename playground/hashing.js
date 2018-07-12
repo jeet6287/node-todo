@@ -1,6 +1,27 @@
 const _hash = require('crypto-js');
 const jwt = require('jsonwebtoken');
 
+// const bcrypt = require('bcrypt');
+//
+// var textPassword = '123abc!'
+// var saltRounds = 10;
+//
+// //Technique 1 (generate a salt and hash on separate function calls):
+// bcrypt.genSalt(saltRounds, function(err,salt) {
+//     bcrypt.hash(textPassword,salt, function(err,hash) {
+//         console.log(hash);
+//     });
+// });
+//
+// textPassword = '123abc!'
+// saltRounds = 10;
+//
+// //Technique 2 (auto-gen a salt and hash):
+// bcrypt.hash(textPassword,saltRounds,function(err,hash) {
+//   console.log(hash);
+// });
+
+
 // jwt.sign(); // creates token encoded takes object with secret
 // jwt.verify();
 

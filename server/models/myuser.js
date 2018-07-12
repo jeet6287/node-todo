@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var customValidator = require('validator');
 var jwt = require('jsonwebtoken');
 var _ = require('lodash');
+const bcrypt = require('bcryptjs');
 
 var Schema = mongoose.Schema;
 var UserSchema = new Schema({
@@ -52,7 +53,33 @@ UserSchema.methods.generateAuthTokens = function() {
    });
 };
 
+UserSchema.methods.removeToken = function (token) {
+  var user = this;
+  return user.update({
+    $pull: {
+      tokens: {token}
+    }
+  });
+};
+
 // model methods
+UserSchema.statics.findByCredentials = function(email,password) {
+  var User = this;
+  return User.findOne({email}).then((user) =>{
+    if(!user){
+       return Promise.reject();
+    }
+    return new Promise((resolve,reject) => {
+      bcrypt.compare(password,user.password,function(err,res) {
+         if(res){
+           resolve(user);
+         }else {
+           reject();
+         }
+     });
+   });
+  });
+};
 
 UserSchema.statics.findByToken = function(token){
    var User = this;  // collections of schemas
@@ -62,7 +89,7 @@ UserSchema.statics.findByToken = function(token){
      decoded = jwt.verify(token,'abc123');
    }catch(e){
       return new Promise((resolve,reject)=>{
-        reject();
+      reject();
       })
    }
 
@@ -72,6 +99,20 @@ UserSchema.statics.findByToken = function(token){
      'tokens.access':'auth'
    });
 };
+
+UserSchema.pre('save', function(next) {
+  var unitUser = this;
+  if(unitUser.isModified('password')) {
+     bcrypt.genSalt(10,(err,salt)=>{
+       bcrypt.hash(unitUser.password,salt,(err,hash)=>{
+          unitUser.password = hash;
+          next();
+       });
+     });
+  }else{
+    next();
+  }
+});
 
 var appuser = mongoose.model('appUser',UserSchema);
 

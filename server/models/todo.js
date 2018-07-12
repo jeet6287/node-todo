@@ -5,7 +5,7 @@ var Todo = mongoose.model('Todo',{
       type:String,
       required:true,
       trim:true,
-      minlength:1
+      minlength:5
     },
     completed:{
       type :Boolean,
@@ -14,6 +14,10 @@ var Todo = mongoose.model('Todo',{
     completedAt:{
       type: Number,
       default:null
+    },
+    author:{
+      type:mongoose.Schema.Types.ObjectId,
+      required:true
     }
 });
 
