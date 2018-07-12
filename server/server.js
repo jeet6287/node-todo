@@ -1,3 +1,4 @@
+require('./config/config');
 const _ = require('lodash');
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -11,6 +12,7 @@ var {authenticate} = require('./middleware/authenticate');
 
 
 var app = express();
+const port = process.env.PORT||3000
 // middleware
 app.use(bodyParser.json());
 
@@ -82,7 +84,7 @@ app.get('/todos', authenticate,(req,res) => {
   }).then((todos) => {
     res.status(200).send({todos});
   }, (e) => {
-    res.status(400).send(e); 
+    res.status(400).send(e);
   });
 });
 
@@ -179,8 +181,8 @@ app.get('/users',(req,res) => {
    })
 })
 
-app.listen(3000,()=>{
-  console.log('server listen to port 3000');
+app.listen(port,()=>{
+  console.log(`server listen to port ${port}`);
 });
 
 module.exports = {app};
